@@ -1,0 +1,26 @@
+@Library('cicdlibrary')_
+
+node('built-in')
+{
+    stage('ContDownload')
+    {
+        slpipeline.gitdownload("maven")
+    }
+    stage('ContBuild')
+    {
+        slpipeline.newbuild()
+    }
+    stage('ContDeploy')
+    {
+        slpipeline.newdeploy("ScriptedpipelineSLib","172.31.34.229","testapp1")
+    }
+    stage('ContTesting')
+    {
+        slpipeline.gitdownload("Testingcode")
+        slpipeline.newtest("ScriptedpipelineSLib")
+    }
+    stage('ContDelivery')
+    {
+        slpipeline.newdeploy("ScriptedpipelineSLib","172.31.33.192","liveapp1")
+    }
+}
